@@ -1,0 +1,36 @@
+body {
+	background-image: url(images/main1.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	color: white;
+	height: 100vh;
+}
+
+h1 {
+	text-align: center;
+}
+
+.info {
+	text-align: center;
+}
+
+.box {
+	float: left;
+	min-height: 250px;
+	min-width: 31%;
+	border-style: solid;
+	border-color: white;
+	margin-right: 10px;
+	font-weight: bold;
+	text-align: center;
+	
+}
+
+.chat {
+	margin-top: 20px;
+	display: inline-block;	
+}
+
+.enterName {
+	margin-bottom: 10px;
+}
