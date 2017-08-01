@@ -1,5 +1,5 @@
 body {
-	background-image: url(images/main1.jpg);
+	background-image: url(images/retina_wood.png);
 	background-repeat: no-repeat;
 	background-size: cover;
 	color: white;
@@ -8,21 +8,29 @@ body {
 
 h1 {
 	text-align: center;
+	font-family: 'Amatic SC', cursive;
 }
+
+h3 {
+	font-size: 40px !important;
+} 
 
 .info {
 	text-align: center;
+	font-family: 'Amatic SC', cursive;
+	font-size: 40px;
 }
 
 .box {
 	float: left;
-	min-height: 250px;
+	min-height: 522px;
 	min-width: 31%;
 	border-style: solid;
 	border-color: white;
 	margin-right: 10px;
 	font-weight: bold;
 	text-align: center;
+	font-family: 'Amatic SC', cursive;
 	
 }
 
@@ -33,4 +41,11 @@ h1 {
 
 .enterName {
 	margin-bottom: 10px;
+}
+
+#header{
+	background-color: white;
+	font-size: 45px;
+	font-family: 'Amatic SC', cursive;
+	
 }

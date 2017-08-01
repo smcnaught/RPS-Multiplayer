@@ -52,9 +52,9 @@
 
 			});	
 
-			$("#rock").html("Rock");
-			$("#paper").html("Paper");
-			$("#scissors").html("Scissors");
+			$("#rock").prepend('<img src="assets/Images/rock.png" alt="Rock"/>');
+			$("#paper").prepend('<img src="assets/Images/paper.jpg" alt="Paper"/>');
+			$("#scissors").prepend('<img src="assets/Images/scissors.png" alt="Paper"/>');
 			$("#player1Score").html("Wins: " + wins + " Losses: " + losses);
 
 		} else if(playerCount !== 1 && $("#player2Name").html() == "Waiting for Player 2"){
