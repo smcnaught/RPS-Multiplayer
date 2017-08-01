@@ -20,11 +20,14 @@
  var player2 = $("#player2Name").html();
  var totalPlayers = 2;
  var playerCount = 0;
+ var name1;
+ var name2;
 
 
  // Function for determining if the game is full, then if it's not, determining if the user is player 1 or player 2. 
  function addPlayer(){
 
+ 	name = $("#name").val().trim();
  	// Add an if else that determines which player they are. 
  	for (var i = 0; i < totalPlayers; i++) {
  	
@@ -32,24 +35,55 @@
 			// Assign player1 to equal the player's name.
 			player1 = name;
 			playerCount++;
+			
+			// change the html to reflect
+			$("#welcome").html("Hi " + name + "! You are Player 1");
+			$(".enterName").remove();
 
-			// Write player1 to the player1Name id.
-			$("#player1Name").html(name);
+			database.ref("Player1").set({				
+		 		name: name,
+		 		wins: wins,
+		 		losses: losses
+	 		});
+
+			// Firebase watcher + initial loader HINT: .on("value")
+		    database.ref().on("value", function(snapshot) {
+				$("#player1Name").html(snapshot.child("Player1").child("name").val());
+
+			});	
+
 			$("#rock").html("Rock");
 			$("#paper").html("Paper");
 			$("#scissors").html("Scissors");
 			$("#player1Score").html("Wins: " + wins + " Losses: " + losses);
+
 		} else if(playerCount !== 1 && $("#player2Name").html() == "Waiting for Player 2"){
 			// Assign user to player2.
 			player2 = name;
-			$("#player2Name").html(name);
+
+			// change the html to reflect
+			$("#welcome").html("Hi " + name + "! You are Player 2");
+			$(".enterName").remove();
+
+			database.ref("Player2").set({				
+		 		name: name,
+		 		wins: wins,
+		 		losses: losses
+	 		});
+
+			// Firebase watcher + initial loader HINT: .on("value")
+		    database.ref().on("value", function(snapshot) {
+				$("#player2Name").html(snapshot.child("Player2").child("name").val());
+
+			});	
+
 			$("#rock2").html("Rock");
 			$("#paper2").html("Paper");
 			$("#scissors2").html("Scissors");
 			$("#player2Score").html("Wins: " + wins + " Losses: " + losses);
-		} else if($("#player1Name").html() !== "Waiting for Player 1" && $("#player2Name").html() !== "Waiting for Player 2"){
-			alert("The game is full!");
-		}
+		} //else if($("#player1Name").html() !== "Waiting for Player 1" && $("#player2Name").html() !== "Waiting for Player 2"){
+		// 	alert("The game is full!");
+		// }
 	}
  }
 
@@ -59,33 +93,12 @@
  	//Make sure the page doesn't refresh.
  	event.preventDefault();
 	
-
- 	// Store the player in the database.
- 	name = $("#name").val().trim();
-
-	 	database.ref().push({
-	 		name: name,
-	 		wins: wins,
-	 		losses: losses
-	 	});
-
-	// change the html to reflect
-	$("#welcome").html("Hi " + name + "! You are Player 1");
-	$(".enterName").remove();
-
+	// Call the addPlayer function.
 	addPlayer();
-
  });
 
 
-	// Firebase watcher + initial loader HINT: .on("value")
- //    database.ref().on("value", function(snapshot) {
-	// 	console.log(snapsnot.val().name);
-	// 	$("#player1Name").html(snapshot.val().name);
 
-	// }, function(errorObject){
-	// 	console.log("Errors handled: " + errorObject.code);
-	//    });
 
 });
 
