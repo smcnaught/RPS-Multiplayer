@@ -12,7 +12,7 @@
 // Create a variable to reference the database
  var database = firebase.database();
 
- // Initial Values
+ // Declaring Global Variables:
  var name = "";
  var wins = 0;
  var losses = 0;
@@ -20,8 +20,6 @@
  var player2 = {};
  var totalPlayers = 2;
  var playerCount = 0;
- var name1;
- var name2;
  var waitingPlay1 = "Waiting for Player 1";
  var waitingPlay2 = "Waiting for Player 2";
 
@@ -44,9 +42,170 @@ database.ref().on("value", function(snapshot) {
 	if(snapshot.child("Player2").child("resetClicked").val() === true){
 		$("#player2Name").html(snapshot.child("Player2").child("name").val());
 	}
+
+	// Show winner
+	// if both players have made a selection, determine the winner. 
+	if(snapshot.child("Player1").child("rock").val() === true && snapshot.child("Player2").child("rock").val() === true){
+		$("#winner").html(snapshot.child("Player1").child("winner").val());
+		
+	}
 });	
 
- // Function for determining if the game is full, then if it's not, determining if the user is player 1 or player 2. 
+// Switch statement for Player 1's selections (Rock, Paper, Scissors).
+function showSelection ( rockPaperScissors ){
+	switch(rockPaperScissors){
+		case 'rock': 
+			$("#paper").remove();
+			$("#scissors").remove();
+			$("#rock").find('img').addClass('bigger'); 
+			database.ref("Player1").set({				
+				name: name,
+		 		wins: wins,
+		 		losses: losses,
+				isAssigned: true,
+				resetClicked: false, 
+				rock: true,
+				paper: false,
+				scissors: false
+			 });			
+			// if both players have made a selection, determine the winner. 
+			if(player2.rock){
+				database.ref("Player1").set({				
+				name: name,
+		 		wins: wins,
+		 		losses: losses,
+				isAssigned: true,
+				resetClicked: false, 
+				rock: true,
+				paper: false,
+				scissors: false,
+				winner: "It's a tie"
+			 });
+			 }
+				
+				// else if (player2.paper === true){
+				// 	$("#winner").html("Player 2 wins");
+				// }else if (player2.scissors === true){
+				// 	$("#winner").html("Player 1 wins");
+				// }
+			break;
+		case 'paper':
+			$("#rock").remove();
+			$("#scissors").remove();
+			$("#paper").find('img').addClass('bigger');
+			database.ref("Player1").set({				
+				name: name,
+		 		wins: wins,
+		 		losses: losses,
+				isAssigned: true,
+				resetClicked: false, 
+				rock: false,
+				paper: true,
+				scissors: false
+			 });
+			 // if both players have made a selection, determine the winner. 
+			if(player2.rock){
+				$("#winner").html("Player 1 wins!");
+				}else if (player2.paper === true){
+					$("#winner").html("It's a TIE!");
+				}else if (player2.scissors === true){
+					$("#winner").html("Player 2 Wins!");
+				}	
+			break;
+		case 'scissors':
+			$("#rock").remove();
+			$("#paper").remove();
+			$("#scissors").find('img').addClass('bigger');
+			database.ref("Player1").set({				
+				name: name,
+		 		wins: wins,
+		 		losses: losses,
+				isAssigned: true,
+				resetClicked: false, 
+				rock: false,
+				paper: false,
+				scissors: true
+			 });
+			 // if both players have made a selection, determine the winner. 
+			if(player2.rock){
+				$("#winner").html("Player 2 wins!");
+				}else if (player2.paper === true){
+					$("#winner").html("Player 1 wins");
+				}else if (player2.scissors === true){
+					$("#winner").html("It's a tie!");
+				}	
+			break;
+		case 'rock2':
+			$("#paper2").remove();
+			$("#scissors2").remove();
+			$("#rock2").find('img').addClass('bigger');
+			database.ref("Player2").set({				
+				name: name,
+		 		wins: wins,
+		 		losses: losses,
+				isAssigned: true,
+				resetClicked: false, 
+				rock: true,
+				paper: false,
+				scissors: false
+			 });
+			if(player1.rock){
+				$("#winner").html("It's a tie!");
+				}else if (player1.paper === true){
+					$("#winner").html("Player 1 wins!");
+				}else if (player1.scissors === true){
+					$("#winner").html("Player 2 wins!");
+				}		
+			break;
+		case 'paper2':
+			$("#rock2").remove();
+			$("#scissors2").remove();
+			$("#paper2").find('img').addClass('bigger');
+			database.ref("Player2").set({				
+				name: name,
+		 		wins: wins,
+		 		losses: losses,
+				isAssigned: true,
+				resetClicked: false, 
+				rock: false,
+				paper: true,
+				scissors: false
+			 });
+			if(player1.rock){
+				$("#winner").html("Player 2 wins!");
+				}else if (player1.paper === true){
+					$("#winner").html("It's a tie!");
+				}else if (player1.scissors === true){
+					$("#winner").html("Player 1 wins!");
+				}	
+			break;
+		case 'scissors2':
+			$("#rock2").remove();
+			$("#paper2").remove();
+			$("#scissors2").find('img').addClass('bigger');
+			database.ref("Player2").set({				
+				name: name,
+		 		wins: wins,
+		 		losses: losses,
+				isAssigned: true,
+				resetClicked: false, 
+				rock: false,
+				paper: false,
+				scissors: true
+			 });
+			if(player1.rock){
+				$("#winner").html("Player 1 wins!");
+				}else if (player1.paper === true){
+					$("#winner").html("Player 2 wins!");
+				}else if (player1.scissors === true){
+					$("#winner").html("It's a tie!");
+				}
+			break;
+		default : alert("Sorry, there was an error in the program");
+	}
+};
+
+// Function for determining if the game is full, then if it's not, determining if the user is player 1 or player 2. 
  function addPlayer(){
  	name = $("#name").val().trim();
  	// Add an if else that determines which player they are. 
@@ -177,7 +336,6 @@ $("#reset2").on("click", function(){
 	$(".info").prepend('<button id="addPlayer" class="enterName" type="submit">Start</button>');
 	$(".info").prepend('<input id="name" class="enterName" type="text">');
 });
-
 
 });
 
