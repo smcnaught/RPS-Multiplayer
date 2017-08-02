@@ -22,7 +22,8 @@
 		<h1 class = "jumbotron" id = "header">Rock ~ Paper ~ Scissors</h1>
 
 		<div class = "info">
-			<p id="welcome"></p>		
+			<p id="welcome"></p>
+			<p id ="turnInfo"></p>		
 			<input id="name" class="enterName" type="text">
 			<button id="addPlayer" class="enterName" type="submit">Start</button>		
 		</div>
@@ -33,6 +34,7 @@
 			<h3 id = "paper"></h3>
 			<h3 id = "scissors"></h3>
 			<h3 id = "player1Score"></h3>
+			<h3 id = "reset"></h3>
 		</div>
 		
 		<div class = "box">
@@ -45,11 +47,12 @@
 			<h3 id = "paper2"></h3>
 			<h3 id = "scissors2"></h3>
 			<h3 id = "player2Score"></h3>
+			<h3 id = "reset2"></h3>
 		</div>
 		
 		<div class = "chat">
-			<textarea class="chat" rows="8" cols="60"></textarea><br>
-			<input class="chat" type="text" name="chat" style="margin-top: 0">
+			<textarea class="chat" id="messages" rows="8" cols="60"></textarea><br>
+			<input class="chat" id="input" type="text" name="chat" style="margin-top: 0">
 			<button>Send</button>
 		</div>
 	</div>

@@ -1,7 +1,7 @@
 body {
-	background-image: url(images/retina_wood.png);
+	 background-image: url(images/retina_wood.png);
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: cover; 
 	color: white;
 	height: 100vh;
 }
@@ -31,12 +31,15 @@ h3 {
 	font-weight: bold;
 	text-align: center;
 	font-family: 'Amatic SC', cursive;
+	font-size: 30px;
 	
 }
 
 .chat {
 	margin-top: 20px;
-	display: inline-block;	
+	font-size: 30px;
+	display: inline-block;
+	font-family: 'Amatic SC', cursive;	
 }
 
 .enterName {
@@ -47,5 +50,16 @@ h3 {
 	background-color: white;
 	font-size: 45px;
 	font-family: 'Amatic SC', cursive;
-	
+
+}
+
+#messages {
+	width: 213%;
+	height: 207px;
+}
+
+#input {
+	width: 213%;
+	height: 50px;
+	margin-bottom: 5px;
 }
