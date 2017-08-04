@@ -23,18 +23,18 @@
 
 		<div class = "info">
 			<p id="welcome"></p>
-			<p id ="turnInfo"></p>		
 			<input id="name" class="enterName" type="text">
 			<button id="addPlayer" class="enterName" type="submit">Start</button>		
+			<p id ="turnInfo"></p>		
 		</div>
 
 		<div class = "box">
 			<h3 id = "player1Name">Waiting for Player 1</h3>
-			<h3 id = "rock" onclick="showSelection('rock')"></h3>
-			<h3 id = "paper" onclick="showSelection('paper')"></h3>
-			<h3 id = "scissors" onclick="showSelection('scissors')"></h3>
-			<h3 id = "player1Score"></h3>
-			<h3 id = "reset"></h3>
+			<h3 id = "rock"></h3>
+			<h3 id = "paper"></h3>
+			<h3 id = "scissors"></h3>
+			<h3 id = "player1Score">Wins:&nbsp<span id = "player1Wins"></span><span>&nbspLosses:&nbsp</span><span id = "player1Losses"></span></h3>
+			<h3 id = "leaveGame1"></h3>
 		</div>
 		
 		<div class = "box">
@@ -43,17 +43,16 @@
 
 		<div class = "box">
 			<h3 id = "player2Name">Waiting for Player 2</h3>
-			<h3 id = "rock2" onclick="showSelection('rock2')"></h3>
-			<h3 id = "paper2" onclick="showSelection('paper2')"></h3>
-			<h3 id = "scissors2" onclick="showSelection('scissors2')"></h3>
-			<h3 id = "player2Score"></h3>
-			<h3 id = "reset2"></h3>
+			<h3 id = "rock2"></h3>
+			<h3 id = "paper2"></h3>
+			<h3 id = "scissors2"></h3>
+			<h3 id = "player2Score">Wins:&nbsp<span id = "player2Wins"></span><span>&nbspLosses:&nbsp</span><span id = "player2Losses"></span></h3>
+			<h3 id = "leaveGame2"></h3>
 		</div>
-		
 		<div class = "chat">
-			<textarea class="chat" id="messages" rows="8" cols="60"></textarea><br>
+			<table class="chat" id="messages" rows="8" cols="60"><tr></tr></table><br>
 			<input class="chat" id="input" type="text" name="chat" style="margin-top: 0">
-			<button>Send</button>
+			<button id = "send">Send</button>
 		</div>
 	</div>
 
