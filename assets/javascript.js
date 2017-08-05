@@ -27,6 +27,7 @@ winner = "";
 var turn = "Waiting for 2 players to join the game.";
 var Chat = "";
 var message = "";
+var messages = [];
 
 // Firebase snapshots
 database.ref().on("value", function(snapshot) {
@@ -51,10 +52,12 @@ database.ref().on("value", function(snapshot) {
 		$("#turnInfo").html(snapshot.child("Player1").child("turn").val());
 		
 		// Take snapshots of the messages so they all show up in the message box. 
-		$("#messages").html(snapshot.child("Chat").child("message").val());
+		messages.push(snapshot.child("Chat").child("message").val());
+		$("#messages").html(messages);
 })
 
 // Function that creates a new table row for user messages. 
+// var userMessageID = database.ref("Chat").push();
 function newMessageRow(userName){
 	var table = document.getElementById("messages");
 	var row = table.insertRow();
@@ -63,11 +66,16 @@ function newMessageRow(userName){
 	// cell1.innerHTML = "userName: ";
 	cell2.innerHTML = document.getElementById("input").value;
 	message = cell2.innerHTML;
+	messages.push(message);
+	console.log(messages);
+	$("#messages").html(messages);
+
 
 	// Push message to firebase database.
-	database.ref("Chat").set({
-		message: document.getElementById("input").value
+	database.ref("Chat").update({
+		message: message
 	})
+	
 }
 // Answer Function : Subtracts Player 1's "choice" from Player 2's "choice" and returns answer.
 function myAnswer(){
@@ -369,6 +377,7 @@ $(document).ready(function(){
 		// Event listener for the chat box.
 		$("#send").on('click', function(){
 			newMessageRow();
+			console.log(messages);
 
 			// Remove user input from text bar.
 			$("#input").val('');
