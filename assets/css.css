@@ -53,7 +53,9 @@ h3 {
 
 #messages {
 	width: 213%;
-	height: 207px;
+	height: 25px;
+	font-weight: bold;
+	font-size: 40px;
 }
 
 #input {
@@ -64,4 +66,18 @@ h3 {
 
 .bigger {
 	width: 85%;
+}
+
+#winner {
+	margin-top: 180px;
+	text-decoration: underline;
+}
+
+#welcome {
+	font-size: 50px;
+}
+
+#turnInfo {
+	font-weight: bold;
+	font-size: 45px;
 }

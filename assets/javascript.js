@@ -25,6 +25,8 @@ var losses1 = 0;
 var losses2 = 0;
 winner = "";
 var turn = "Waiting for 2 players to join the game.";
+var Chat = "";
+var message = "";
 
 // Firebase snapshots
 database.ref().on("value", function(snapshot) {
@@ -47,7 +49,26 @@ database.ref().on("value", function(snapshot) {
 
 		// Changing the turn info on the HTML.
 		$("#turnInfo").html(snapshot.child("Player1").child("turn").val());
+		
+		// Take snapshots of the messages so they all show up in the message box. 
+		$("#messages").html(snapshot.child("Chat").child("message").val());
 })
+
+// Function that creates a new table row for user messages. 
+function newMessageRow(userName){
+	var table = document.getElementById("messages");
+	var row = table.insertRow();
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	// cell1.innerHTML = "userName: ";
+	cell2.innerHTML = document.getElementById("input").value;
+	message = cell2.innerHTML;
+
+	// Push message to firebase database.
+	database.ref("Chat").set({
+		message: document.getElementById("input").value
+	})
+}
 // Answer Function : Subtracts Player 1's "choice" from Player 2's "choice" and returns answer.
 function myAnswer(){
 	answer = (Player1.choice - Player2.choice);
@@ -72,6 +93,9 @@ function myAnswer(){
 			wins: wins2,
 			winner: winner
 		});
+
+		// Run the final winner function to see if Player 2 won.
+		finalWinner();
 
 	} else if(answer < 0 || answer === 6){
 		// Player 1 wins.
@@ -100,6 +124,10 @@ function myAnswer(){
 		database.ref("Player1").update({
 			winner: winner
 		});
+
+		// Run the final winner function to see if Player 1 won.
+		finalWinner();
+
 	} else {
 		// The game is a tie.
 		winner = "It's a tie!";
@@ -114,7 +142,36 @@ function myAnswer(){
 	}
 }
 
+// Function that determines final winner. If either player has 3 wins, they win the game and it resets wins & losses.
+function finalWinner(){
+	if(wins1 === 3){
+		// Tell the players who won & reset the wins/losses.
+		database.ref("Player1").update({
+			turn: "Player 1 has won the game!!!",
+			wins: 0,
+			losses: 0
+		});
+		database.ref("Player2").update({
+			wins: 0,
+			losses: 0
+		});
+	} else if (wins2 === 3){
+		database.ref("Player1").update({
+			turn: "Player 2 has won the game!!!",
+			wins: 0,
+			losses: 0
+		});
+		database.ref("Player2").update({
+			wins: 0,
+			losses: 0
+		});
+	}
+}
 $(document).ready(function(){
+	// Clear messages. 
+	database.ref("Chat").set({
+		message:""
+	})
 	// Remove turn info.
 	// Set intial values for Player 1 and 2 in the database. 
 	database.ref("Player1").set({
@@ -149,7 +206,7 @@ $(document).ready(function(){
 			database.ref("Player1").update({
 				name: name,
 				isAssigned: true,
-				turn: Player1.name + "'s turn"
+				turn: name + "'s turn"
 			});
 
 			// Change the HTML to reflect Player 1. 
@@ -160,9 +217,7 @@ $(document).ready(function(){
 			$("#scissors").prepend('<img src="assets/Images/scissors.png" alt="Paper"/>');
 			$("#player1Wins").html(wins1);
 			$("#player1Losses").html(losses1);
-			// $("#player1Score").html("Wins: " + wins1 + " Losses: " + losses1);
 			$("#leaveGame1").prepend('<button>Leave Game</button>');
-			// $("#turnInfo").html("It's your turn!");
 			
 		} else if(!Player2.isAssigned){
 			// Update the firebase data.
@@ -179,9 +234,7 @@ $(document).ready(function(){
 			$("#scissors2").prepend('<img src="assets/Images/scissors.png" alt="Paper"/>');
 			$("#player2Wins").html(wins2);
 			$("#player2Losses").html(losses2);
-			// $("#player2Score").html("Wins: " + wins2 + " Losses: " + losses2);
 			$("#leaveGame2").prepend('<button>Leave Game</button>');
-			// $("#turnInfo").html("Waiting for player 1 to choose.");
 		}
 	})
 
@@ -236,7 +289,8 @@ $(document).ready(function(){
 
 			// Update the database.
 			database.ref("Player1").update({
-				choice: 1
+				choice: 1,
+				turn: Player2.name + "'s turn"
 			});
 		})
 		// Event listener : Player 1 Clicks Paper
@@ -246,7 +300,8 @@ $(document).ready(function(){
 
 			// Update the database.
 			database.ref("Player1").update({
-				choice: 7
+				choice: 7,
+				turn: Player2.name + "'s turn"
 			});
 		})
 		// Event listener : Player 1 Clicks Scissors
@@ -256,7 +311,8 @@ $(document).ready(function(){
 
 			// Update the database.
 			database.ref("Player1").update({
-				choice: 4
+				choice: 4,
+				turn: Player2.name + "'s turn"
 			});
 		})
 		// Event listener : Player 2 Clicks Rock
@@ -268,6 +324,9 @@ $(document).ready(function(){
 			database.ref("Player2").update({
 				choice: 1
 			});
+			database.ref("Player1").update({
+				turn: Player1.name + "'s turn"
+			})
 
 			// Since Player 2 goes after Player 1, run the answer function as soon as they make a selection. 
 			myAnswer();
@@ -280,8 +339,11 @@ $(document).ready(function(){
 
 			// Update the database.
 			database.ref("Player2").update({
-				choice: 7
+				choice: 7,
 			});
+			database.ref("Player1").update({
+				turn: Player1.name + "'s turn"
+			})
 
 			// Since Player 2 goes after Player 1, run the answer function as soon as they make a selection. 
 			myAnswer();
@@ -294,10 +356,21 @@ $(document).ready(function(){
 
 			// Update the database.
 			database.ref("Player2").update({
-				choice: 4
+				choice: 4,
 			});
+			database.ref("Player1").update({
+				turn: Player1.name + "'s turn"
+			})
 
 			// Since Player 2 goes after Player 1, run the answer function as soon as they make a selection. 
 			myAnswer();
+		})
+
+		// Event listener for the chat box.
+		$("#send").on('click', function(){
+			newMessageRow();
+
+			// Remove user input from text bar.
+			$("#input").val('');
 		})
 });
